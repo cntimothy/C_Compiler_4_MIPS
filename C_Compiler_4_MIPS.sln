@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "CodeGenera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{55E849C1-5EBF-457F-BE39-EE446DE57DAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainProject", "MainProject\MainProject.csproj", "{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{55E849C1-5EBF-457F-BE39-EE446DE57DAA}.Release|Mixed Platforms.Build.0 = Release|x86
 		{55E849C1-5EBF-457F-BE39-EE446DE57DAA}.Release|x86.ActiveCfg = Release|x86
 		{55E849C1-5EBF-457F-BE39-EE446DE57DAA}.Release|x86.Build.0 = Release|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Debug|x86.ActiveCfg = Debug|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Debug|x86.Build.0 = Debug|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Release|Any CPU.ActiveCfg = Release|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Release|Mixed Platforms.Build.0 = Release|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Release|x86.ActiveCfg = Release|x86
+		{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
