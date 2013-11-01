@@ -1,0 +1,5 @@
+E:\projects\C_Compiler_4_MIPS\TestProject\bin\Debug\TestProject.exe
+E:\projects\C_Compiler_4_MIPS\TestProject\bin\Debug\TestProject.pdb
+E:\projects\C_Compiler_4_MIPS\TestProject\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\projects\C_Compiler_4_MIPS\TestProject\obj\x86\Debug\TestProject.exe
+E:\projects\C_Compiler_4_MIPS\TestProject\obj\x86\Debug\TestProject.pdb
