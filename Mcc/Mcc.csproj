@@ -8,8 +8,8 @@
     <ProjectGuid>{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MIPS246.Compiler.MainProject</RootNamespace>
-    <AssemblyName>MainProject</AssemblyName>
+    <RootNamespace>MIPS246.Compiler.Mcc</RootNamespace>
+    <AssemblyName>Mcc</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

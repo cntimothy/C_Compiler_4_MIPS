@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "CodeGenera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{55E849C1-5EBF-457F-BE39-EE446DE57DAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainProject", "MainProject\MainProject.csproj", "{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mcc", "Mcc\Mcc.csproj", "{873D70ED-BB32-4ABD-8FBB-6AFF9388FF80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
