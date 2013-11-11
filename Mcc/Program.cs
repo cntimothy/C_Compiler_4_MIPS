@@ -28,11 +28,12 @@ namespace MIPS246.Compiler.Mcc
             bool showStageResult = isShowStageResult(args);
 
             //进行词法分析
+            List<Token> tokenList;
             if (stage >= 1)
             {
                 try
                 {
-                    LexicalAnalyzer.LexicalAnalysis.Analysis(filePath, showStageResult);
+                    tokenList = LexicalAnalyzer.LexicalAnalysis.Analysis(filePath, showStageResult);
                 }
                 catch (MccBaseException e)
                 {

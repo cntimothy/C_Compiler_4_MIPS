@@ -19,17 +19,17 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         /// <returns></returns>
         public static List<Token> Analysis(string filePath, bool showResult)
         {
-            List<Token> tokenList = new List<Token>();
-            List<string> contentList;
-            
+            List<Token> tokenList = new List<Token>();  //分析得到的token流
+            List<string> contentList;   //包含源文件每一行的List
+
             //读源文件
             try
             {
                 contentList = getContentListFromSourceFile(filePath);
             }
             catch (MccBaseException e)
-            { 
-                throw(e);
+            {
+                throw (e);
             }
 
             return tokenList;
@@ -47,28 +47,28 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             List<string> contentList = new List<string>();
             try
             {
-                StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("gb2312"));
-
-                string line = "";
-                while ((line = sr.ReadLine()) != null)
+                using (StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("gb2312")))
                 {
-                    line = line.Trim();
-                    if (line.StartsWith("#"))
+                    string line = "";
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        continue;
+                        line = line.Trim();
+                        if (line.StartsWith("#"))
+                        {
+                            continue;
+                        }
+                        if (line == "")
+                        {
+                            continue;
+                        }
+                        contentList.Add(line);
                     }
-                    if (line == "")
-                    {
-                        continue;
-                    }
-                    contentList.Add(line);
                 }
-                sr.Close();
             }
             catch (System.IO.FileNotFoundException e)
             {
                 int stage = 1;
-                throw(new MIPS246.Compiler.ErrorHandling.FileNotFoundException(filePath, stage, e));
+                throw (new MIPS246.Compiler.ErrorHandling.FileNotFoundException(filePath, stage, e));
             }
             return contentList;
         }
