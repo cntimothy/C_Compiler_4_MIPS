@@ -55,6 +55,10 @@
       <Project>{905423C7-BAA5-48D9-B5D8-0514A9C26F21}</Project>
       <Name>DataStructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrorHandling\ErrorHandling.csproj">
+      <Project>{FE523DB6-8523-482F-B62A-EBE1E81C45B3}</Project>
+      <Name>ErrorHandling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LexicalAnalyzer\LexicalAnalyzer.csproj">
       <Project>{86A81EEF-6067-40CA-8C64-75BA0B173966}</Project>
       <Name>LexicalAnalyzer</Name>

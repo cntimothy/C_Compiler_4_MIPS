@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using MIPS246.Compiler.DataStructure;
+using MIPS246.Compiler.ErrorHandling;
 
 namespace MIPS246.Compiler.Mcc
 {
@@ -26,18 +27,18 @@ namespace MIPS246.Compiler.Mcc
             //获取是否输出阶段结果
             bool showStageResult = isShowStageResult(args);
 
-            //从源文件冲获取内容List
-            List<string> contentList = getContentListFromSourceFile(filePath);
-
-            //获取词法分析表
-            LexTbl lexTbl = getLexTbl();
-
-            //获取关键字表
-            KeyWordTbl keyWordTbl = getKeyWordTbl();
-
+            //进行词法分析
             if (stage >= 1)
             {
-                LexicalAnalyzer.LexicalAnalysis.Analysis(contentList, lexTbl, keyWordTbl, showStageResult);
+                try
+                {
+                    LexicalAnalyzer.LexicalAnalysis.Analysis(filePath, showStageResult);
+                }
+                catch (MccBaseException e)
+                {
+                    Console.WriteLine(e.ShowMessage());
+                    return;
+                }
             }
 
             Console.ReadKey();
@@ -167,62 +168,6 @@ namespace MIPS246.Compiler.Mcc
                 returnValue = true;
             }
             return returnValue;
-        }
-
-        /// <summary>
-        /// 将指定源文件去掉空行和#行读到List中
-        /// </summary>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        private static List<string> getContentListFromSourceFile(string filePath)
-        {
-            List<string> contentList = new List<string>();
-            try
-            {
-                StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("gb2312"));
-
-                string line = "";
-                while ((line = sr.ReadLine()) != null)
-                {
-                    line = line.Trim();
-                    if (line.StartsWith("#"))
-                    {
-                        continue;
-                    }
-                    if (line == "")
-                    {
-                        continue;
-                    }
-                    contentList.Add(line);
-                }
-                sr.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(getHelpStr());
-            }
-            return contentList;
-        }
-
-        /// <summary>
-        /// 获取关键字表
-        /// </summary>
-        /// <returns></returns>
-        private static KeyWordTbl getKeyWordTbl()
-        {
-            KeyWordTbl keyWordTbl = new KeyWordTbl();
-            return keyWordTbl;
-        }
-
-        /// <summary>
-        /// 获取词法分析表
-        /// </summary>
-        /// <returns></returns>
-        private static LexTbl getLexTbl()
-        {
-            LexTbl lexTbl = new LexTbl();
-            return lexTbl;
         }
         #endregion
     }

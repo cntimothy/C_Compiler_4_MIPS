@@ -5,3 +5,5 @@ E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\obj\Debug\LexicalAnalyzer.dll
 E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\obj\Debug\LexicalAnalyzer.pdb
 E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\bin\Debug\DataStructure.dll
 E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\bin\Debug\DataStructure.pdb
+E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\bin\Debug\ErrorHandling.dll
+E:\projects\C_Compiler_4_MIPS\LexicalAnalyzer\bin\Debug\ErrorHandling.pdb
