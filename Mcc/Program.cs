@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using MIPS246.Compiler.DataStructure;
 
 namespace MIPS246.Compiler.Mcc
 {
@@ -14,16 +16,31 @@ namespace MIPS246.Compiler.Mcc
             {
                 return;
             }
+
             //获取文件路径
             string filePath = getFilePath(args);
+
             //获取进行到哪一阶段
             int stage = getStage(args);
+
             //获取是否输出阶段结果
             bool showStageResult = isShowStageResult(args);
 
-            Console.WriteLine("路径是" + filePath);
-            Console.WriteLine("进行到阶段：" + stage.ToString());
-            Console.WriteLine("是否输出结果：" + showStageResult.ToString());
+            //从源文件冲获取内容List
+            List<string> contentList = getContentListFromSourceFile(filePath);
+
+            //获取词法分析表
+            LexTbl lexTbl = getLexTbl();
+
+            //获取关键字表
+            KeyWordTbl keyWordTbl = getKeyWordTbl();
+
+            if (stage >= 1)
+            {
+                LexicalAnalyzer.LexicalAnalysis.Analysis(contentList, lexTbl, keyWordTbl, showStageResult);
+            }
+
+            Console.ReadKey();
         }
 
         #region Private Method
@@ -77,10 +94,10 @@ namespace MIPS246.Compiler.Mcc
                 Console.WriteLine("未输入文件名！");
                 returnValue = false;
             }
-            else if(paramCount == 2)
+            else if (paramCount == 2)
             {
-                List<string>  paramDicKeys= getParamDic().Keys.ToList();
-                if(!paramDicKeys.Contains(args[1]))
+                List<string> paramDicKeys = getParamDic().Keys.ToList();
+                if (!paramDicKeys.Contains(args[1]))
                 {
                     Console.WriteLine("未识别参数：" + args[1]);
                     Console.WriteLine(helpStr);
@@ -103,7 +120,7 @@ namespace MIPS246.Compiler.Mcc
                     returnValue = false;
                 }
             }
-            else if(paramCount > 3)
+            else if (paramCount > 3)
             {
                 Console.WriteLine("参数错误");
                 Console.WriteLine(helpStr);
@@ -150,6 +167,62 @@ namespace MIPS246.Compiler.Mcc
                 returnValue = true;
             }
             return returnValue;
+        }
+
+        /// <summary>
+        /// 将指定源文件去掉空行和#行读到List中
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private static List<string> getContentListFromSourceFile(string filePath)
+        {
+            List<string> contentList = new List<string>();
+            try
+            {
+                StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("gb2312"));
+
+                string line = "";
+                while ((line = sr.ReadLine()) != null)
+                {
+                    line = line.Trim();
+                    if (line.StartsWith("#"))
+                    {
+                        continue;
+                    }
+                    if (line == "")
+                    {
+                        continue;
+                    }
+                    contentList.Add(line);
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(getHelpStr());
+            }
+            return contentList;
+        }
+
+        /// <summary>
+        /// 获取关键字表
+        /// </summary>
+        /// <returns></returns>
+        private static KeyWordTbl getKeyWordTbl()
+        {
+            KeyWordTbl keyWordTbl = new KeyWordTbl();
+            return keyWordTbl;
+        }
+
+        /// <summary>
+        /// 获取词法分析表
+        /// </summary>
+        /// <returns></returns>
+        private static LexTbl getLexTbl()
+        {
+            LexTbl lexTbl = new LexTbl();
+            return lexTbl;
         }
         #endregion
     }

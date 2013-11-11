@@ -46,6 +46,28 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGenerator\CodeGenerator.csproj">
+      <Project>{558E7500-336E-4A45-A477-F150E395EC0B}</Project>
+      <Name>CodeGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataStructure\DataStructure.csproj">
+      <Project>{905423C7-BAA5-48D9-B5D8-0514A9C26F21}</Project>
+      <Name>DataStructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LexicalAnalyzer\LexicalAnalyzer.csproj">
+      <Project>{86A81EEF-6067-40CA-8C64-75BA0B173966}</Project>
+      <Name>LexicalAnalyzer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SemanticAnalyzer\SemanticAnalyzer.csproj">
+      <Project>{CEB4CB89-AEB3-41AA-BC82-96D4B2CCE5A1}</Project>
+      <Name>SemanticAnalyzer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SyntacticAnalyzer\SyntacticAnalyzer.csproj">
+      <Project>{FFA04B40-ABD3-4149-86E7-688D72A02BD3}</Project>
+      <Name>SyntacticAnalyzer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
