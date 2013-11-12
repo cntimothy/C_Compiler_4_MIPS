@@ -31,14 +31,17 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             {
                 throw (e);
             }
-
+            foreach (string item in contentList)
+            {
+                Console.WriteLine(item);
+            }
             return tokenList;
         }
         #endregion
 
         #region Private Method
         /// <summary>
-        /// 将指定源文件去掉空行，注释行和#行读到List中
+        /// 将指定源文件读到List中
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -53,14 +56,6 @@ namespace MIPS246.Compiler.LexicalAnalyzer
                     while ((line = sr.ReadLine()) != null)
                     {
                         line = line.Trim();
-                        if (line.StartsWith("#") || line.StartsWith("//"))
-                        {
-                            continue;
-                        }
-                        if (line == "")
-                        {
-                            continue;
-                        }
                         contentList.Add(line);
                     }
                 }
