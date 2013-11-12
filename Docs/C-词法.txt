@@ -1,0 +1,17 @@
+1. The keywords of the language are the following:
+	else if int return void while
+All keywords are reserved, and must be written in lowercase
+
+2.Special symbols are following:
+	+ - * / < <= > >= == != = ; , ( ) [ ] { } /* */
+	
+3.Other tokens are ID and NUM, defined by the following regular expressions:
+	ID = letter letter*
+	NUM = digit digit*
+	letter = a|...|z|A|...|Z
+	digit = 0|...|9
+Lower- and uppercase letters are distinct.
+
+4.White space consists of blanks, newlines, and tabs. White space is ignored except that is must separate ID's, NUM's, and keywords.
+
+5.Comments are surrounded by the usual C notations /* */. Comments can be placed anywhere white space can appear(that is, Comments cannot be placed within tokens) and may include more than one line. Comments may not be nested.
