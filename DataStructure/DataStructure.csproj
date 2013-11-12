@@ -45,6 +45,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErrorHandling\ErrorHandling.csproj">
+      <Project>{FE523DB6-8523-482F-B62A-EBE1E81C45B3}</Project>
+      <Name>ErrorHandling</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
