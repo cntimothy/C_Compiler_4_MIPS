@@ -43,6 +43,7 @@
     <Compile Include="KeyWordTbl.cs" />
     <Compile Include="LexTbl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemWord.cs" />
     <Compile Include="Token.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -20,8 +20,8 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         public static List<Token> Analysis(string filePath, bool showResult)
         {
             List<Token> tokenList = new List<Token>();  //分析得到的token流
+            
             List<string> contentList;   //包含源文件每一行的List
-
             //读源文件
             try
             {
@@ -31,10 +31,19 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             {
                 throw (e);
             }
-            foreach (string item in contentList)
+
+            LexTbl lexTbl;              //词法分析表
+            string lexTblFilePath = "lextbl.inf";
+            //读词法转换表配置文件
+            try
             {
-                Console.WriteLine(item);
+                lexTbl = getLexTbl(lexTblFilePath);
             }
+            catch (MccBaseException e)
+            {
+                throw (e);
+            }
+            Console.WriteLine(lexTbl.Show());
             return tokenList;
         }
         #endregion
@@ -69,22 +78,36 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         }
 
         /// <summary>
-        /// 获取关键字表
-        /// </summary>
-        /// <returns></returns>
-        private static KeyWordTbl getKeyWordTbl()
-        {
-            KeyWordTbl keyWordTbl = new KeyWordTbl();
-            return keyWordTbl;
-        }
-
-        /// <summary>
         /// 获取词法分析表
         /// </summary>
         /// <returns></returns>
-        private static LexTbl getLexTbl()
+        private static LexTbl getLexTbl(string filePath)
         {
             LexTbl lexTbl = new LexTbl();
+            try
+            {
+                using (StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding("gb2312")))
+                {
+                    string line = "";
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        line = line.Trim();
+                        string[] statusStr = line.Split('\t');
+                        int[] statusInt = new int[statusStr.Length];
+                        for (int i = 0; i != statusStr.Length; i++)
+                        {
+                            statusInt[i] = Convert.ToInt32(statusStr[i]);
+                        }
+                        lexTbl.AddNewLine(statusInt);
+                    }
+                }
+            }
+            catch (System.IO.FileNotFoundException e)
+            {
+                int stage = 1;
+                throw (new MIPS246.Compiler.ErrorHandling.FileNotFoundException(filePath, stage, e));
+            }
+
             return lexTbl;
         }
         #endregion
