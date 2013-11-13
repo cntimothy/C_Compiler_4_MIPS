@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MIPS246.Compiler.ErrorHandling
 {
-    public class LexTblInitError:MccBaseException
+    public class LexTblInitExcpetion:MccBaseException
     {
         private static string message = "发生异常：词法转换表初始化异常";
 
@@ -15,7 +15,7 @@ namespace MIPS246.Compiler.ErrorHandling
         /// </summary>
         /// <param name="stage">发生异常的阶段</param>
         /// <param name="inner"></param>
-        public LexTblInitError(int stage, Exception inner)
+        public LexTblInitExcpetion(int stage, Exception inner)
             : base(message, stage, inner)
         {
         }

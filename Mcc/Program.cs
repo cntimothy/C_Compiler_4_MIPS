@@ -38,6 +38,7 @@ namespace MIPS246.Compiler.Mcc
                 catch (MccBaseException e)
                 {
                     Console.WriteLine(e.ShowMessage());
+                    Console.ReadKey();
                     return;
                 }
             }

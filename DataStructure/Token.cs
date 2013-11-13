@@ -14,6 +14,11 @@ namespace MIPS246.Compiler.DataStructure
         {
             this.LineNo = lineNo;
         }
+
+        public virtual string Show()
+        {
+            return "( " + LineNo + " )";
+        }
     }
 
     /// <summary>
@@ -29,9 +34,9 @@ namespace MIPS246.Compiler.DataStructure
             this.Name = name;
         }
 
-        public string Show()
+        public override string Show()
         {
-            return "( " + this.Name + ", " + this.LineNo + " )";
+            return "标识符：( " + this.Name + ", " + this.LineNo + " )";
         }
     }
 
@@ -48,9 +53,9 @@ namespace MIPS246.Compiler.DataStructure
             this.Value = value;
         }
 
-        public string Show()
+        public override string Show()
         {
-            return "( " + this.Value + ", " + this.LineNo + " )";
+            return "常量：( " + this.Value + ", " + this.LineNo + " )";
         }
     }
 
@@ -66,9 +71,9 @@ namespace MIPS246.Compiler.DataStructure
             this.ID = id;
         }
 
-        public string Show()
+        public override string Show()
         {
-            return "( " + this.ID + ", " + this.LineNo + " )";
+            return "系统单词：( " + this.ID + ", " + this.LineNo + " )";
         }
     }
 }

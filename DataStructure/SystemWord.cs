@@ -14,7 +14,7 @@ namespace MIPS246.Compiler.DataStructure
             'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
             'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
             'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '<', '>', '=', '!', ';', ',',
-            '(', ')', '[', ']', '{', '}'};
+            '(', ')', '[', ']', '{', '}', ' '};
 
         /// <summary>
         /// 关键字集合
@@ -27,5 +27,16 @@ namespace MIPS246.Compiler.DataStructure
             ADD, SUB, MULT, DIV, BIGGER, NOTLESS, LESS, NOTBIGGER, EUQAL, NOTEQUAL, ASSIGN,
             COMMA, SEMI, LEFTPARENTHESIS, RIGHTPARENTHESIS, LEFTBRACKET, RIGHTBRACKET, LEFTBRACE, RIGHTBRACE
         }
+
+        public static readonly Dictionary<string, SystemWordID> SystemWordNameIDDic = new Dictionary<string, SystemWordID>() { 
+        {"else", SystemWord.SystemWordID.ELSE}, {"if", SystemWord.SystemWordID.IF}, {"int", SystemWord.SystemWordID.INT},
+        {"return", SystemWord.SystemWordID.RETURN}, {"void", SystemWord.SystemWordID.VOID}, {"while", SystemWord.SystemWordID.WHILE},
+        {"+", SystemWord.SystemWordID.ADD}, {"-", SystemWord.SystemWordID.SUB}, {"*", SystemWord.SystemWordID.MULT},
+        {"/", SystemWord.SystemWordID.DIV}, {">", SystemWord.SystemWordID.BIGGER}, {">=", SystemWord.SystemWordID.NOTLESS},
+        {"<", SystemWord.SystemWordID.LESS}, {"<=", SystemWord.SystemWordID.NOTBIGGER}, {"==", SystemWord.SystemWordID.EUQAL},
+        {"!=", SystemWord.SystemWordID.NOTEQUAL}, {"=", SystemWord.SystemWordID.ASSIGN}, {",", SystemWord.SystemWordID.COMMA},
+        {";", SystemWord.SystemWordID.SEMI}, {"(", SystemWord.SystemWordID.LEFTPARENTHESIS}, {")", SystemWord.SystemWordID.RIGHTPARENTHESIS},
+        {"[", SystemWord.SystemWordID.LEFTBRACKET}, {"]", SystemWord.SystemWordID.RIGHTBRACKET}, {"{", SystemWord.SystemWordID.LEFTBRACE},
+        {"}", SystemWord.SystemWordID.RIGHTBRACE}};
     }
 }

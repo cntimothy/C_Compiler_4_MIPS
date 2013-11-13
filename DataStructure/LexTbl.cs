@@ -32,12 +32,12 @@ namespace MIPS246.Compiler.DataStructure
             if (statusArray.Length == 0 || table.Length == 0 ||table[0].Length == 0)   //如果数组为空，则抛出异常
             { 
                 int stage = 1;
-                throw (new LexTblInitError(stage, new Exception()));
+                throw (new LexTblInitExcpetion(stage, new Exception()));
             }
             if (statusArray.Length != table.Length || SystemWord.terminalCharList.Count != table[0].Length)      //如果数组长度不正确，抛出异常
             {
                 int stage = 1;
-                throw (new LexTblInitError(stage, new Exception()));
+                throw (new LexTblInitExcpetion(stage, new Exception()));
             }
             
             for (int i = 0; i < statusArray.Length; i++)
