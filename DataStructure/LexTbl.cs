@@ -34,7 +34,7 @@ namespace MIPS246.Compiler.DataStructure
                 int stage = 1;
                 throw (new LexTblInitExcpetion(stage, new Exception()));
             }
-            if (statusArray.Length != table.Length || SystemWord.terminalCharList.Count != table[0].Length)      //如果数组长度不正确，抛出异常
+            if (statusArray.Length != table.Length || SystemWord.AcceptableCharList.Count != table[0].Length)      //如果数组长度不正确，抛出异常
             {
                 int stage = 1;
                 throw (new LexTblInitExcpetion(stage, new Exception()));
@@ -43,9 +43,9 @@ namespace MIPS246.Compiler.DataStructure
             for (int i = 0; i < statusArray.Length; i++)
             {
                 Dictionary<char, int> dic = new Dictionary<char, int>();
-                for (int j = 0; j < SystemWord.terminalCharList.Count; j++)
+                for (int j = 0; j < SystemWord.AcceptableCharList.Count; j++)
                 {
-                    dic.Add(SystemWord.terminalCharList[j], table[i][j]);
+                    dic.Add(SystemWord.AcceptableCharList[j], table[i][j]);
                 }
                 this.table.Add(statusArray[i], dic);
             }
@@ -72,9 +72,9 @@ namespace MIPS246.Compiler.DataStructure
         {
             int currentRow = this.table.Keys.Count + 1;
             Dictionary<char, int> dic = new Dictionary<char, int>();
-            for(int i = 0; i != SystemWord.terminalCharList.Count; i++ )
+            for(int i = 0; i != SystemWord.AcceptableCharList.Count; i++ )
             {
-                dic.Add(SystemWord.terminalCharList[i], statusArray[i]);
+                dic.Add(SystemWord.AcceptableCharList[i], statusArray[i]);
             }
             this.table.Add(currentRow, dic);
         }

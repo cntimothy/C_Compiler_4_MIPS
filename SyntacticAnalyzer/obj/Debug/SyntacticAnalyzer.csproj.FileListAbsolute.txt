@@ -3,3 +3,7 @@ E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\bin\Debug\SyntacticAnalyzer.pdb
 E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\obj\Debug\ResolveAssemblyReference.cache
 E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\obj\Debug\SyntacticAnalyzer.dll
 E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\obj\Debug\SyntacticAnalyzer.pdb
+E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\bin\Debug\DataStructure.dll
+E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\bin\Debug\ErrorHandling.dll
+E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\bin\Debug\DataStructure.pdb
+E:\projects\C_Compiler_4_MIPS\SyntacticAnalyzer\bin\Debug\ErrorHandling.pdb

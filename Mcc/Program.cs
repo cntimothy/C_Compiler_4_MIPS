@@ -28,12 +28,28 @@ namespace MIPS246.Compiler.Mcc
             bool showStageResult = isShowStageResult(args);
 
             //进行词法分析
-            List<Token> tokenList;
+            List<Token> tokenList = new List<Token>();
             if (stage >= 1)
             {
                 try
                 {
-                    tokenList = LexicalAnalyzer.LexicalAnalysis.Analysis(filePath, showStageResult);
+                    LexicalAnalyzer.LexicalAnalysis.Analysis(ref tokenList, filePath, showStageResult);
+                }
+                catch (MccBaseException e)
+                {
+                    Console.WriteLine(e.ShowMessage());
+                    Console.ReadKey();
+                    return;
+                }
+            }
+
+            //语法分析
+            AST ast = new AST() ;
+            if (stage >= 2)
+            {
+                try
+                {
+                    SyntacticAnalyzer.SyntacticAnalysis.Analysis(ref ast, tokenList, showStageResult);
                 }
                 catch (MccBaseException e)
                 {

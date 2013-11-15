@@ -17,9 +17,8 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         /// <param name="filePath">指定的文件路径</param>
         /// <param name="showResult">是否输出阶段结果</param>
         /// <returns></returns>
-        public static List<Token> Analysis(string filePath, bool showResult)
+        public static void Analysis(ref List<Token> tokenList, string filePath, bool showResult)
         {
-            List<Token> tokenList = new List<Token>();  //分析得到的token流
 
             List<string> contentList;   //包含源文件每一行的List
             LexTbl lexTbl;              //词法分析表
@@ -43,8 +42,6 @@ namespace MIPS246.Compiler.LexicalAnalyzer
                     Console.WriteLine(t.Show());
                 }
             }
-
-            return tokenList;
         }
         #endregion
 
@@ -137,7 +134,7 @@ namespace MIPS246.Compiler.LexicalAnalyzer
                     string buffer = ""; //存储识别的单词
                     while (nextPos != lineCharArray.Length)
                     {
-                        if (!SystemWord.terminalCharList.Contains(lineCharArray[nextPos])) //遇到不能识别的字符
+                        if (!SystemWord.AcceptableCharList.Contains(lineCharArray[nextPos])) //遇到不能识别的字符
                         {
                             throw (new UnknowCharExcpetion(lineCharArray[nextPos], lineNo, new Exception()));
                         }
@@ -180,7 +177,7 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         {
             if (nextStatus == -1)   //标识符
             {
-                if (SystemWord.keyWordList.Contains(buffer))
+                if (SystemWord.KeyWordList.Contains(buffer))
                 {
                     tokenList.Add(new SystemWordToken(SystemWord.SystemWordNameIDDic[buffer], lineNo));
                 }
