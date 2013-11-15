@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MIPS246.Compiler.DataStructure
 {
-    public class Grammer
+    public class Grammar
     {
         public string Left { set; get; }
         public List<string> Right { set; get; }
@@ -14,7 +14,7 @@ namespace MIPS246.Compiler.DataStructure
         /// 构造函数
         /// </summary>
         /// <param name="GrammerStr"></param>
-        public Grammer(string GrammerStr)
+        public Grammar(string GrammerStr)
         {
             string[] grammerStrArray = GrammerStr.Trim().Split(':');
             this.Left = grammerStrArray[0].Trim();

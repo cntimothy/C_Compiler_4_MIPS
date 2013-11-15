@@ -66,16 +66,16 @@ relop : >=
 relop : ==
 relop : !=
 	
-additive-expression : term temp5
-temp5 : addop term temp5
-temp5 : EMPTY
+additive-expression : term temp3
+temp3 : addop term temp3
+temp3 : EMPTY
 	
 addop : +
 addop : -
 	
-term : factor temp6
-temp6 :mulop factor temp6
-temp6 : EMPTY
+term : factor temp4
+temp4 :mulop factor temp4
+temp4 : EMPTY
 	
 mulop : *
 mulop : /
@@ -90,6 +90,6 @@ call : ID ( args )
 args : arg-list
 args : EMPTY
 	
-arglist : expression temp7
-temp7 : , expression temp7
-temp7 : EMPTY
+arglist : expression temp5
+temp5 : , expression temp5
+temp5 : EMPTY

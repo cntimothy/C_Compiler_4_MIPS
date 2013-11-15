@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST.cs" />
-    <Compile Include="Grammer.cs" />
+    <Compile Include="Grammar.cs" />
     <Compile Include="KeyWordTbl.cs" />
     <Compile Include="LexTbl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
