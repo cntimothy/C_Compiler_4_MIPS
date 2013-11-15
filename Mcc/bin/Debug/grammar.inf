@@ -1,0 +1,95 @@
+program : declaration-list
+
+declaration-list : declaration temp1
+temp1 : declaration temp1
+temp1 : EMPTY
+
+declaration : var-declaration
+declaration : fun-declaration
+
+var-declaration : type-specifier ID ;
+var-declaration : type-speccifier ID [ NUM ];
+
+type-specifier : int 
+type-specifier : void
+
+fun-declaration : type-specifier ID ( params ) compound-stmt
+
+params : param-list
+params : void
+	
+param-list : param temp2
+temp2 : , param temp2
+temp2 : EMPTY
+	
+param : type-specifier ID
+param : type-specifier ID [ ]
+	
+compound-stmt : { local-declarations statement-list }
+
+local-declarations : var-declaration local-declarations
+local-declarations : EMPTY
+	
+statement-list : statement statement-list
+statement-list : EMPTY
+	
+statement : expressioin-stmt
+statement : compound-stmt
+statement : selection-stmt
+statement : iteration-stmt
+statement : return-stmt
+	
+expression-stmt : expression ;
+expression-stmt : ;
+	
+selection-stmt : if ( expression ) statement
+selection-stmt : if ( expression ) statement else statement
+	
+iteration-stmt : while ( expression ) statement
+
+return-stmt : return ; 
+return-stmt : return expression ;
+	
+expression : var = expression
+expression : simple-expression ;
+	
+var : ID
+var : ID [ expression ]
+	
+simple-expression : additive-expression relop additive-expression
+simple-expression : additive-expression
+	
+relop : <=
+relop : <
+relop : >
+relop : >=
+relop : ==
+relop : !=
+	
+additive-expression : term temp5
+temp5 : addop term temp5
+temp5 : EMPTY
+	
+addop : +
+addop : -
+	
+term : factor temp6
+temp6 :mulop factor temp6
+temp6 : EMPTY
+	
+mulop : *
+mulop : /
+	
+factor : ( expression )
+factor : var
+factor : call
+factor : NUM
+	
+call : ID ( args )
+
+args : arg-list
+args : EMPTY
+	
+arglist : expression temp7
+temp7 : , expression temp7
+temp7 : EMPTY

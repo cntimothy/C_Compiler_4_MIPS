@@ -22,12 +22,11 @@ namespace MIPS246.Compiler.LexicalAnalyzer
 
             List<string> contentList;   //包含源文件每一行的List
             LexTbl lexTbl;              //词法分析表
-            string lexTblFilePath = "lextbl.inf";//词法分析表配置文件路径
 
             try
             {
                 contentList = getContentListFromSourceFile(filePath);   //读源文件
-                lexTbl = getLexTbl(lexTblFilePath);                     //读词法转换表配置文件
+                lexTbl = getLexTbl();                     //读词法转换表配置文件
                 tokenList = genTokenList(contentList, lexTbl);          //生成Token串
             }
             catch (MccBaseException e)
@@ -78,8 +77,10 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         /// 获取词法分析表
         /// </summary>
         /// <returns></returns>
-        private static LexTbl getLexTbl(string filePath)
+        private static LexTbl getLexTbl()
         {
+            string filePath = "lextbl.inf";//词法分析表配置文件路径
+
             LexTbl lexTbl = new LexTbl();
             try
             {
