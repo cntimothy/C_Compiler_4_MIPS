@@ -8,7 +8,7 @@ declaration : var-declaration
 declaration : fun-declaration
 
 var-declaration : type-specifier ID ;
-var-declaration : type-speccifier ID [ NUM ];
+var-declaration : type-specifier ID [ NUM ];
 
 type-specifier : int 
 type-specifier : void
@@ -33,7 +33,7 @@ local-declarations : EMPTY
 statement-list : statement statement-list
 statement-list : EMPTY
 	
-statement : expressioin-stmt
+statement : expression-stmt
 statement : compound-stmt
 statement : selection-stmt
 statement : iteration-stmt
@@ -90,6 +90,6 @@ call : ID ( args )
 args : arg-list
 args : EMPTY
 	
-arglist : expression temp5
+arg-list : expression temp5
 temp5 : , expression temp5
 temp5 : EMPTY

@@ -36,10 +36,7 @@ namespace MIPS246.Compiler.LexicalAnalyzer
 
             if (showResult) //如果要求显示阶段结果
             {
-                foreach (Token t in tokenList)
-                {
-                    Console.WriteLine(t.Show());
-                }
+                showTokenList(tokenList);
             }
         }
         #endregion
@@ -198,6 +195,19 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             else    //系统单词
             {
                 tokenList.Add(new SystemWordToken(SystemWord.SystemWordNameIDDic[buffer], lineNo));
+            }
+        }
+
+        /// <summary>
+        /// 输出单词流
+        /// </summary>
+        /// <param name="tokenList"></param>
+        private static void showTokenList(List<Token> tokenList)
+        {
+            Console.WriteLine("单词流如下：");
+            for (int i = 0; i < tokenList.Count; i++)
+            {
+                Console.WriteLine(tokenList[i].Show());
             }
         }
         #endregion
