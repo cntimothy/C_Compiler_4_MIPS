@@ -173,11 +173,11 @@ namespace MIPS246.Compiler.LexicalAnalyzer
         /// <param name="tokenList">Token串</param>
         private static void processWord(string buffer, int lineNo, int nextStatus, List<Token> tokenList)
         {
-            if (nextStatus == -1)   //标识符
+            if (nextStatus == -1)   //标识符或者关键字
             {
                 if (SystemWord.KeyWordList.Contains(buffer))
                 {
-                    tokenList.Add(new SystemWordToken(SystemWord.SystemWordNameIDDic[buffer], lineNo));
+                    tokenList.Add(new SystemWordToken(buffer, lineNo));
                 }
                 else
                 {
@@ -194,7 +194,7 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             }
             else    //系统单词
             {
-                tokenList.Add(new SystemWordToken(SystemWord.SystemWordNameIDDic[buffer], lineNo));
+                tokenList.Add(new SystemWordToken(buffer, lineNo));
             }
         }
 

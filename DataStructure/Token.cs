@@ -8,16 +8,23 @@ namespace MIPS246.Compiler.DataStructure
 {
     public class Token
     {
-        public int LineNo { set; get; }
+        public string Name { set; get; }    //名称
+        public int LineNo { set; get; }     //行号
 
-        public Token(int lineNo)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="lineNo">行号</param>
+        public Token(string name, int lineNo)
         {
+            this.Name = name;
             this.LineNo = lineNo;
         }
 
         public virtual string Show()
         {
-            return "( " + LineNo + " )";
+            return "( " + this.Name + ", " + this.LineNo + " )";
         }
     }
 
@@ -26,17 +33,22 @@ namespace MIPS246.Compiler.DataStructure
     /// </summary>
     public class IDToken:Token
     {
-        public string Name { set; get; }
+        public string ID{set; get;}
 
-        public IDToken(string name, int lineNo)
-            : base(lineNo)
+        /// <summary>
+        /// 标识符Token构造函数
+        /// </summary>
+        /// <param name="id">标识符自身</param>
+        /// <param name="lineNo">行号</param>
+        public IDToken(string id, int lineNo)
+            : base("ID", lineNo)
         {
-            this.Name = name;
+            this.ID = id;
         }
 
         public override string Show()
         {
-            return "标识符：( " + this.Name + ", " + this.LineNo + " )";
+            return "标识符：( " + this.ID + ", " + this.Name + ", " + this.LineNo + " )";
         }
     }
 
@@ -48,14 +60,14 @@ namespace MIPS246.Compiler.DataStructure
         public int Value { set; get; }
 
         public ConstantToken(int value, int lineNo)
-            : base(lineNo)
+            : base("NUM", lineNo)
         {
             this.Value = value;
         }
 
         public override string Show()
         {
-            return "常量：( " + this.Value + ", " + this.LineNo + " )";
+            return "常量：( " + this.Name + ", " + this.Value + ", " + this.LineNo + " )";
         }
     }
 
@@ -64,16 +76,18 @@ namespace MIPS246.Compiler.DataStructure
     /// </summary>
     public class SystemWordToken : Token
     {
-        public SystemWord.SystemWordID ID { set; get; }
-
-        public SystemWordToken(SystemWord.SystemWordID id, int lineNo):base(lineNo)
+        /// <summary>
+        /// 系统单词Token构造函数
+        /// </summary>
+        /// <param name="name">系统单词自身</param>
+        /// <param name="lineNo"></param>
+        public SystemWordToken(string name, int lineNo):base(name, lineNo)
         {
-            this.ID = id;
         }
 
         public override string Show()
         {
-            return "系统单词：( " + this.ID + ", " + this.LineNo + " )";
+            return "系统单词：( " + this.Name + ", " + this.LineNo + " )";
         }
     }
 }
