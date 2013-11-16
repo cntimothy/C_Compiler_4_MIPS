@@ -18,7 +18,7 @@ namespace MIPS246.Compiler.DataStructure
 
         public static readonly List<string> TerminatorList = new List<string>() { "ID", "NUM", "+", "-", "*", "/",
             "<", "<=", ">", ">=", "=", "==", "!=", ";", ",", "(", ")", "[", "]", "{", "}", 
-            "ELSE", "IF", "INT", "RETURN", "VOID", "WHILE"};
+            "else", "if", "int", "return", "void", "while"};
 
         /// <summary>
         /// 关键字集合

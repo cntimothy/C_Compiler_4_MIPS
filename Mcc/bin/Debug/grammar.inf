@@ -8,7 +8,7 @@ declaration : var-declaration
 declaration : fun-declaration
 
 var-declaration : type-specifier ID ;
-var-declaration : type-specifier ID [ NUM ];
+var-declaration : type-specifier ID [ NUM ] ;
 
 type-specifier : int 
 type-specifier : void
