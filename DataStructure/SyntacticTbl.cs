@@ -28,6 +28,10 @@ namespace MIPS246.Compiler.DataStructure
         #endregion
 
         #region Public Method
+        public Grammar getGrammar(string unterminator, string terminator)
+        {
+            return this.table[unterminator][terminator];
+        }
         #endregion
 
         #region Private Method
