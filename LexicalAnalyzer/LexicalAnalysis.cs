@@ -121,6 +121,7 @@ namespace MIPS246.Compiler.LexicalAnalyzer
             {
                 if ((line == "") || line.StartsWith("#")) //忽略空行和#行
                 {
+                    lineNo++;
                     continue;
                 }
                 else

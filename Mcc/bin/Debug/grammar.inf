@@ -4,26 +4,31 @@ declaration-list : declaration temp1
 temp1 : declaration temp1
 temp1 : EMPTY
 
-declaration : var-declaration
-declaration : fun-declaration
+declaration : type-specifier ID temp6
+temp6 : ;
+temp6 : [ NUM ]
+temp6 : ( params ) compound-stmt
 
-var-declaration : type-specifier ID ;
-var-declaration : type-specifier ID [ NUM ] ;
+var-declaration : type-specifier ID temp7
+temp7 : ;
+temp7 : [ NUM ]
 
 type-specifier : int 
 type-specifier : void
 
 fun-declaration : type-specifier ID ( params ) compound-stmt
 
-params : param-list
-params : void
+params : void temp13
+temp13 : ID temp8 temp2
+temp13 : EMPTY
 	
 param-list : param temp2
 temp2 : , param temp2
 temp2 : EMPTY
-	
-param : type-specifier ID
-param : type-specifier ID [ ]
+
+param : type-specifier ID temp8
+temp8 : [ ]
+temp8 : EMPTY
 	
 compound-stmt : { local-declarations statement-list }
 
@@ -41,23 +46,28 @@ statement : return-stmt
 	
 expression-stmt : expression ;
 expression-stmt : ;
-	
-selection-stmt : if ( expression ) statement
-selection-stmt : if ( expression ) statement else statement
+
+selection-stmt : if ( expression ) statement temp9
+temp9 : else statement
+temp9 : EMPTY
 	
 iteration-stmt : while ( expression ) statement
 
-return-stmt : return ; 
-return-stmt : return expression ;
-	
-expression : var = expression
-expression : simple-expression ;
-	
-var : ID
-var : ID [ expression ]
-	
-simple-expression : additive-expression relop additive-expression
-simple-expression : additive-expression
+return-stmt : return temp10
+temp10 : ;
+temp10 : expression ;
+
+expression : var temp13
+temp13 : = expression
+temp13 : temp4 temp3 temp12
+
+var : ID temp11
+temp11 : [ expression ]
+temp11 : EMPTY
+
+simple-expression : additive-expression temp12
+temp12 : relop additive-expression
+temp12 : EMPTY
 	
 relop : <=
 relop : <
@@ -81,9 +91,10 @@ mulop : *
 mulop : /
 	
 factor : ( expression )
-factor : var
-factor : call
 factor : NUM
+factor : ID temp14
+temp14 : temp11
+temp14 : ( args )
 	
 call : ID ( args )
 

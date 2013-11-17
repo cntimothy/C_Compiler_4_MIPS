@@ -28,6 +28,12 @@ namespace MIPS246.Compiler.DataStructure
         #endregion
 
         #region Public Method
+        /// <summary>
+        /// 根据非终结符和终结符返回文法产生式
+        /// </summary>
+        /// <param name="unterminator">非终结符</param>
+        /// <param name="terminator">终结符</param>
+        /// <returns></returns>
         public Grammar getGrammar(string unterminator, string terminator)
         {
             return this.table[unterminator][terminator];

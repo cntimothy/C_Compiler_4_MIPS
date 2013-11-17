@@ -14,28 +14,71 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         #region Public Method
         public static void Analysis(ref AST ast, List<Token> tokenList, bool showStageResult)
         {
-            List<Grammar> grammarList = getGrammer();   //获取文法
+            List<Grammar> grammarList = getGrammer();   //获取语法
 
             //获取非终结符List
             List<string> unterminatorList = getUntermiatorList(grammarList); 
 
             //获取可空的非终结符List
-            List<string> nullableUnterminatorList = getNullableUnTerminatorList(grammarList);
+            List<string> nullableUnterminatorList = getNullableUnTerminatorList(grammarList, unterminatorList);
 
             //获取First字典
-            Dictionary<string, List<string>> firstDicForUnterminator = new Dictionary<string, List<string>>();  //非终结符
-            Dictionary<Grammar, List<string>> firstDicForGrammar = new Dictionary<Grammar, List<string>>();     //文法
-            getFirstDic(ref firstDicForUnterminator, ref firstDicForGrammar, grammarList, nullableUnterminatorList);
+            Dictionary<string, List<string>> firstDicForUnterminator = getFirstDicForUnterminator(grammarList, nullableUnterminatorList);  //非终结符
+            Dictionary<Grammar, List<string>> firstDicForGrammar = getFirstDicForGrammar(grammarList, nullableUnterminatorList, firstDicForUnterminator);     //语法
 
             //获取Follow字典
-            Dictionary<string, List<string>> followDic = getFollowDic(grammarList, unterminatorList, nullableUnterminatorList, firstDicForUnterminator);
+            //Dictionary<string, List<string>> followDic = getFollowDic(grammarList, unterminatorList, nullableUnterminatorList, firstDicForUnterminator);
+
+            //根据first字典和follow字典获取语法分析表
+            //SyntacticTbl syntacticTbl = new SyntacticTbl(firstDicForGrammar, followDic, unterminatorList);
 
             //输出结果
             if (showStageResult)
             {
-                showResult(grammarList, unterminatorList, nullableUnterminatorList, firstDicForUnterminator, firstDicForGrammar, followDic);
+                //showResult(grammarList, unterminatorList, nullableUnterminatorList, firstDicForUnterminator, firstDicForGrammar, followDic);
+                Console.WriteLine();
+                Console.WriteLine("可空非终结符集合：");
+                foreach (string item in nullableUnterminatorList)
+                {
+                    Console.Write(item + " ");
+                }
 
+                Console.WriteLine();
+                Console.WriteLine("非终结符的First字典：");
+                foreach (string item in firstDicForUnterminator.Keys)
+                {
+                    Console.Write(item + ":");
+                    foreach (string first in firstDicForUnterminator[item])
+                    {
+                        Console.Write(first + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("语法的First字典：");
+                foreach (Grammar item in firstDicForGrammar.Keys)
+                {
+                    Console.Write("( " + item.Show() + " ):");
+                    foreach (string first in firstDicForGrammar[item])
+                    {
+                        Console.Write(first + " ");
+                    }
+                    Console.WriteLine();
+                }
             }
+
+            //主处理
+            try
+            {
+                //process(ast, tokenList, syntacticTbl);
+            }
+            catch (MccBaseException e)
+            {
+                throw e;
+            }
+
+            
         }
         #endregion
 
@@ -59,7 +102,7 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         }
 
         /// <summary>
-        /// 从文件中读取文法
+        /// 从文件中读取语法
         /// </summary>
         /// <returns></returns>
         private static List<Grammar> getGrammer()
@@ -96,31 +139,22 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         /// </summary>
         /// <param name="grammarList"></param>
         /// <returns></returns>
-        private static List<string> getNullableUnTerminatorList(List<Grammar> grammarList)
+        private static List<string> getNullableUnTerminatorList(List<Grammar> grammarList, List<string> unterminatorList)
         {
             List<string> nullableUnterminatorList = new List<string>();
-            foreach (Grammar item in grammarList)   //先读取直接可空非终结符
-            {
-                if (item.Right.Count == 1 && item.Right[0] == "EMPTY")
-                {
-                    nullableUnterminatorList.Add(item.Left);
-                }
-            }
-            bool flag = true;   //指示是否还有新增的可空非终结符
-            while (flag)
+            bool flag = false; //指示在循环中是否有变化
+            do
             {
                 flag = false;
-                for (int i = 0; i != grammarList.Count; i++)
+                foreach (Grammar grammar in grammarList)
                 {
-                    if (isSubList(grammarList[i].Right, nullableUnterminatorList)
-                        && !nullableUnterminatorList.Contains(grammarList[i].Left))   //如果该非终结符可空，且尚未加入到可空非终结符集合中
+                    if (isNullable(grammar, nullableUnterminatorList) && (!nullableUnterminatorList.Contains(grammar.Left)))
                     {
-                        nullableUnterminatorList.Add(grammarList[i].Left);
+                        nullableUnterminatorList.Add(grammar.Left);
                         flag = true;
                     }
                 }
-
-            }
+            } while (flag);
 
             return nullableUnterminatorList;
         }
@@ -146,130 +180,161 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         }
 
         /// <summary>
-        /// 生成first集合
+        /// 生成非终结符first集合
         /// </summary>
         /// <returns></returns>
-        private static Dictionary<string, List<string>> getFirstDic(ref Dictionary<string, List<string>> firstDicForUnterminator, ref Dictionary<Grammar, List<string>> firstDicForGrammar, List<Grammar> grammarList, List<string> nullableUnterminatorList)
+        private static Dictionary<string, List<string>> getFirstDicForUnterminator(List<Grammar> grammarList, List<string> nullableUnterminatorList)
         {
+            Dictionary<string, List<string>> firstDicForUnterminator = new Dictionary<string, List<string>>();
+            //初始化first集
             foreach (Grammar grammar in grammarList)
             {
-                if (!firstDicForUnterminator.Keys.Contains(grammar.Left))  //如果非终结符是第一次遇到，在字典中增加一条记录
+                if (!firstDicForUnterminator.Keys.Contains(grammar.Left))
                 {
                     firstDicForUnterminator.Add(grammar.Left, new List<string>());
                 }
-                if (!firstDicForGrammar.Keys.Contains(grammar))             //如果文法是第一次遇到，在字典中增加一条记录
+            }
+
+            bool flag = true;   //指示在一次循环中是first集是否有变化
+            do
+            {
+                flag = false;
+                foreach (Grammar grammar in grammarList)
+                {
+                    if (isNullGrammar(grammar)) //如果是空语法则跳过
+                    {
+                        continue;
+                    }
+                    flag = flag || addToFirstDicForUnterminator(grammar.Right[0], grammar.Left, firstDicForUnterminator);
+                    for (int i = 0; i < grammar.Right.Count - 1; i++)
+                    {
+                        if (isNullable(grammar.Right[i], nullableUnterminatorList))
+                        {
+                            flag = flag || addToFirstDicForUnterminator(grammar.Right[i + 1], grammar.Left, firstDicForUnterminator);
+                            continue;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            while (flag);
+            return firstDicForUnterminator;
+        }
+
+        /// <summary>
+        /// 生成语法产生式的first集合
+        /// </summary>
+        /// <param name="grammarList"></param>
+        /// <param name="nullableUnterminatorList"></param>
+        /// <param name="firstDicForUnterminator"></param>
+        /// <returns></returns>
+        private static Dictionary<Grammar, List<string>> getFirstDicForGrammar(List<Grammar> grammarList, List<string> nullableUnterminatorList, Dictionary<string, List<string>> firstDicForUnterminator)
+        {
+            Dictionary<Grammar, List<string>> firstDicForGrammar = new Dictionary<Grammar, List<string>>();
+            foreach (Grammar grammar in grammarList)
+            {
+                if (!firstDicForGrammar.Keys.Contains(grammar)) //如果是第一次遇到的语法产生式，则像first集中添加一条记录
                 {
                     firstDicForGrammar.Add(grammar, new List<string>());
                 }
-                if (grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY")  //如果是文法的右边是EMPTY，则跳过
+                if (isNullGrammar(grammar)) //如果是空语法则跳过
                 {
                     continue;
                 }
-
-                else if (isTerminator(grammar.Right[0]))   //如果文法右边的第一个字符是终结符，则加入到非终结符和文法的First集中
+                addToFirstDicForGrammar(grammar.Right[0], grammar, firstDicForGrammar, firstDicForUnterminator);
+                for (int i = 0; i < grammar.Right.Count - 1; i++)
                 {
-                    if (!firstDicForUnterminator[grammar.Left].Contains(grammar.Right[0])) //避免重复添加
+                    if (isNullable(grammar.Right[i], nullableUnterminatorList))
                     {
-                        firstDicForUnterminator[grammar.Left].Add(grammar.Right[0]);
-                    }
-                    if (!firstDicForGrammar[grammar].Contains(grammar.Right[0]))            //避免重复添加
-                    {
-                        firstDicForGrammar[grammar].Add(grammar.Right[0]);
-                    }
-                }
-                else
-                {
-                    firstDicForUnterminator[grammar.Left].Add(grammar.Right[0].ToUpper());  //如果不是，则将右边第一个非终结符的first集加到非终结符和文法的first集中
-                    firstDicForGrammar[grammar].Add(grammar.Right[0].ToUpper());
-                    for (int i = 0; i != (grammar.Right.Count - 1); i++)        //如果第一个非终结符可空，则将下一个非终结符的first集加到非终结符和文法的first集中，依次进行
-                    {
-                        if (nullableUnterminatorList.Contains(grammar.Right[i]))    
-                        {
-                            if (isTerminator(grammar.Right[i + 1]))     //终结符直接加
-                            {
-                                firstDicForUnterminator[grammar.Left].Add(grammar.Right[i + 1]);
-                                firstDicForGrammar[grammar].Add(grammar.Right[i + 1]);
-                            }
-                            else                                        //非终结符加占位符
-                            {
-                                firstDicForUnterminator[grammar.Left].Add(grammar.Right[i + 1].ToUpper());
-                                firstDicForGrammar[grammar].Add(grammar.Right[i + 1].ToUpper());
-                            }
-                        }
-                    }
-                }
-            }
-
-            //构建已经完成first构建的非终结符集合
-            List<string> finishedList = new List<string>();
-            foreach (string unterminator in firstDicForUnterminator.Keys)
-            {
-                if (isSubList(firstDicForUnterminator[unterminator], SystemWord.TerminatorList))
-                {
-                    finishedList.Add(unterminator);
-                }
-            }
-
-            //替换掉非终结符first集中的占位符
-            bool flag = true;
-            while (flag)
-            {
-                flag = false;
-                Dictionary<string, List<string>> newFirstDicForUnterminator = new Dictionary<string, List<string>>();   //构造新的临时first集合
-                foreach (KeyValuePair<string, List<string>> pair in firstDicForUnterminator)
-                {
-                    if (isSubList(pair.Value, SystemWord.TerminatorList))   //如果是已经完成构建first集合的非终结符，则直接添加
-                    {
-                        newFirstDicForUnterminator.Add(pair.Key, pair.Value);
+                        addToFirstDicForGrammar(grammar.Right[i+1], grammar, firstDicForGrammar, firstDicForUnterminator);
                         continue;
-                    }
-                    else //否则就要新建一个临时值
-                    {
-                        List<string> newValue = new List<string>();
-                        foreach (string item in pair.Value)
-                        {
-                            if (finishedList.Contains(item.ToLower()))  //替换掉已经完成构建first集合的非终结符占位符
-                            {
-                                newValue.AddRange(firstDicForUnterminator[item.ToLower()]);
-                                newValue = newValue.Distinct().ToList();    //去掉重复元素
-                            }
-                            else
-                            {
-                                newValue.Add(item);
-                            }
-                        }
-                        newFirstDicForUnterminator.Add(pair.Key, newValue);
-                        if (isSubList(newValue, SystemWord.TerminatorList))
-                        {
-                            finishedList.Add(pair.Key); //有新增的完成构建first集合的非终结符，则继续循环，直到没有新增
-                            flag = true;
-                        }
-                    }
-                }
-                firstDicForUnterminator = newFirstDicForUnterminator;
-            }
-
-            //替换掉文法first集中的占位符
-            Dictionary<Grammar, List<string>> newFirstDicForGrammar = new Dictionary<Grammar, List<string>>();
-            foreach (KeyValuePair<Grammar, List<string>> keyValuePair in firstDicForGrammar)
-            {
-                List<string> newValue = new List<string>();
-                foreach (string item in keyValuePair.Value)
-                {
-                    if (isTerminator(item))
-                    {
-                        newValue.Add(item);
                     }
                     else
                     {
-                        newValue.AddRange(firstDicForUnterminator[item.ToLower()]);
+                        break;
                     }
                 }
-                newFirstDicForGrammar.Add(keyValuePair.Key, newValue);
+
+            }
+            return firstDicForGrammar;
+        }
+        /// <summary>
+        /// 检测元素是否为可空
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="nullableUnterminatorList"></param>
+        /// <returns></returns>
+        private static bool isNullable(string item, List<string> nullableUnterminatorList)
+        {
+            bool returnValue = true;
+            if (isTerminator(item) || !nullableUnterminatorList.Contains(item))
+            {
+                returnValue = false;
             }
 
-            firstDicForGrammar = newFirstDicForGrammar;
-            return firstDicForUnterminator;
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 将元素添加进指定非终结符的first集，并返回是否进行过修改
+        /// </summary>
+        /// <param name="factor">语法右部的某个元素</param>
+        /// <param name="unterminator">语法左部的非终结符</param>
+        /// <param name="firstDicForUnterminator">非终结符first集</param>
+        private static bool addToFirstDicForUnterminator(string factor, string unterminator, Dictionary<string, List<string>> firstDicForUnterminator)
+        {
+            bool flag = false; //指示是否进行过修改
+            if (isTerminator(factor))    //如果是新增终结符，则将其添加到字典中
+            {
+                if (!firstDicForUnterminator[unterminator].Contains(factor))
+                {
+                    firstDicForUnterminator[unterminator].Add(factor);
+                    flag = true;
+                }
+            }
+            else    //如果是非终结符，则将其first集增加到指定非终结符的first集中
+            {
+                foreach (string item in firstDicForUnterminator[factor])
+                {
+                    if (!firstDicForUnterminator[unterminator].Contains(item))
+                    {
+                        firstDicForUnterminator[unterminator].Add(item);
+                        flag = true;
+                    }
+                }
+            }
+            return flag;
+        }
+
+        /// <summary>
+        /// 将元素添加进指定语法产生式的first集
+        /// </summary>
+        /// <param name="factor">元素</param>
+        /// <param name="grammar">指定语法产生式</param>
+        /// <param name="firstDicForGrammar">语法产生式的first集</param>
+        /// <param name="firstDicForUnterminator">非终结符的first集</param>
+        private static void addToFirstDicForGrammar(string factor, Grammar grammar, Dictionary<Grammar, List<string>> firstDicForGrammar, Dictionary<string, List<string>> firstDicForUnterminator)
+        {
+            if (isTerminator(factor))    //如果是新增终结符，则将其添加到字典中
+            {
+                if (!firstDicForGrammar[grammar].Contains(factor))
+                {
+                    firstDicForGrammar[grammar].Add(factor);                }
+            }
+
+            else    //如果是非终结符，则将其first集增加到指定语法产生式的first集中
+            {
+                foreach (string item in firstDicForUnterminator[factor])
+                {
+                    if (!firstDicForGrammar[grammar].Contains(item))
+                    {
+                        firstDicForGrammar[grammar].Add(item);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -281,106 +346,7 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         private static Dictionary<string, List<string>> getFollowDic(List<Grammar> grammarList, List<string> unterminatorList, List<string> nullableUnterminatorList, Dictionary<string, List<string>> firstDic)
         {
             Dictionary<string, List<string>> followDic = new Dictionary<string, List<string>>();
-            foreach (string unterminator in unterminatorList)    //初始化follow集，向其中空条目
-            {
-                followDic.Add(unterminator, new List<string>());
-            }
-
-            foreach (Grammar grammar in grammarList)
-            {
-                if (grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY")       //跳过右部为空的语法
-                {
-                    continue;
-                }
-                else
-                {
-                    for (int i = 0; i < grammar.Right.Count - 1; i++)
-                    {
-                        if (isTerminator(grammar.Right[i]))
-                        {
-                            continue;
-                        }
-                        for (int j = i + 1; j < grammar.Right.Count; j++)
-                        {
-                            if (isTerminator(grammar.Right[j])) //如果紧跟终结符，则将终结符加入其follow集
-                            {
-                                followDic[grammar.Right[i]].Add(grammar.Right[j]);
-                                break;
-                            }
-                            else
-                            {
-                                 followDic[grammar.Right[i]].AddRange(firstDic[grammar.Right[j]]);    //否则将非终结符的first集加入其follow集
-                                if (nullableUnterminatorList.Contains(grammar.Right[j]))
-                                {
-                                    if (j == grammar.Right.Count - 1 && grammar.Left != grammar.Right[j])   //如果是最右边最后一个元素则将左边的follow集加入到其follow集中
-                                    {
-                                        followDic[grammar.Right[i]].Add(grammar.Left.ToUpper());
-                                    }
-                                    continue;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            List<string> finishedList = new List<string>(); //已经完成follow集的非终结符结合
-            foreach (string unterminator in followDic.Keys)
-            {
-                if (isSubList(followDic[unterminator], SystemWord.TerminatorList))
-                {
-                    finishedList.Add(unterminator);
-                }
-            }
-
-            bool flag = true;
-            while (flag)
-            {
-                flag = false;
-                Dictionary<string, List<string>> newFollowDic = new Dictionary<string, List<string>>();   //构造新的临时follow集合
-                foreach (KeyValuePair<string, List<string>> pair in followDic)
-                {
-                    if (isSubList(pair.Value, SystemWord.TerminatorList))   //如果是已经完成构建follow集合的非终结符，则直接添加
-                    {
-                        newFollowDic.Add(pair.Key, pair.Value);
-                        continue;
-                    }
-                    else //否则就要新建一个临时值
-                    {
-                        List<string> newValue = new List<string>();
-                        foreach (string item in pair.Value)
-                        {
-                            if (finishedList.Contains(item.ToLower()))  //替换掉已经完成构建follow集合的非终结符占位符
-                            {
-                                newValue.AddRange(firstDic[item.ToLower()]);
-                            }
-                            else
-                            {
-                                newValue.Add(item);
-                            }
-                        }
-                        newFollowDic.Add(pair.Key, newValue);
-                        if (isSubList(newValue, SystemWord.TerminatorList))
-                        {
-                            finishedList.Add(pair.Key); //有新增的完成构建first集合的非终结符，则继续循环，直到没有新增
-                            flag = true;
-                        }
-                    }
-                }
-                followDic = newFollowDic;
-            }
-
-            //去掉重复的元素
-            Dictionary<string, List<string>> newFollowDic1 = new Dictionary<string, List<string>>();
-            foreach (string key in followDic.Keys)
-            {
-                newFollowDic1.Add(key, followDic[key].Distinct().ToList());
-            }
-            followDic = newFollowDic1;
+            
 
             return followDic;
         }
@@ -388,7 +354,7 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         /// <summary>
         /// 输出结果
         /// </summary>
-        /// <param name="grammarList">文法</param>
+        /// <param name="grammarList">语法</param>
         /// <param name="unterminatorList">非终结符集合</param>
         /// <param name="nullableUnterminatorList">可空非终结符结合</param>
         /// <param name="firstDic">first集合</param>
@@ -396,7 +362,7 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         private static void showResult(List<Grammar> grammarList, List<string> unterminatorList, List<string> nullableUnterminatorList, Dictionary<string, List<string>> firstDicForUnterminator, Dictionary<Grammar, List<string>> firstDicForGrammar, Dictionary<string, List<string>> followDic)
         {
             Console.WriteLine();
-            Console.WriteLine("扫描到的文法：");
+            Console.WriteLine("扫描到的语法：");
             foreach (Grammar grammar in grammarList)
             {
                 Console.WriteLine(grammar.Show());
@@ -431,7 +397,7 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
             }
 
             Console.WriteLine();
-            Console.WriteLine("文法的First字典：");
+            Console.WriteLine("语法的First字典：");
             foreach (Grammar item in firstDicForGrammar.Keys)
             {
                 Console.Write("( " + item.Show() + " ):");
@@ -463,6 +429,149 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
         private static bool isTerminator(string str)
         {
             return SystemWord.TerminatorList.Contains(str);
+        }
+
+        /// <summary>
+        /// 主处理程序
+        /// </summary>
+        /// <param name="ast"></param>
+        /// <param name="tokenList"></param>
+        /// <param name="syntacticTbl"></param>
+        private static void process(AST ast, List<Token> tokenList, SyntacticTbl syntacticTbl)
+        {
+            Stack<string> analysisStack = new Stack<string>();  //分析栈
+            analysisStack.Push("$");    //语法结束符号入栈
+            tokenList.Add(new SystemWordToken("$", 0));   //向token串的尾部添加语法结束符号
+            analysisStack.Push("program");
+            int i = 0; //输入缓冲区指向当前符号的指针
+            Token curToken = tokenList[i];
+            string stackPeak;
+
+            while ((analysisStack.Count != 0) && ( i != tokenList.Count))
+            {
+                curToken = tokenList[i];
+                stackPeak = analysisStack.Pop();
+                if (isTerminator(stackPeak))
+                {
+                    if (stackPeak == curToken.Name)
+                    {
+                        i++;
+                    }
+                    else
+                    { 
+                        throw(new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                    }
+                }
+                else
+                {
+                    if (stackPeak == "$")
+                    {
+                        if (stackPeak == curToken.Name)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                        }
+                    }
+                    else
+                    {
+                        Grammar grammar = syntacticTbl.getGrammar(stackPeak, curToken.Name);
+                        if (grammar != null)
+                        {
+                            if (!(grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY"))
+                            {
+                                for (int j = grammar.Right.Count - 1; j >= 0; j--)
+                                {
+                                    analysisStack.Push(grammar.Right[j]);
+                                }
+                            }
+                            //i++;
+                        }
+                        else
+                        {
+                            throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                        }
+                    }
+                }
+            }
+            if ((analysisStack.Count != 0) || (i != tokenList.Count))
+            {
+                throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+            }
+        }
+
+        /// <summary>
+        /// 检测制定list的子list是否都是可为空的，都可为空返回true，否则返回false
+        /// </summary>
+        /// <param name="list">制定list</param>
+        /// <param name="p">起</param>
+        /// <param name="p_2">止</param>
+        /// <param name="nullableUnterminatorList">可空非终结符list</param>
+        /// <returns></returns>
+        private static bool isNullable(List<string> list, int start, int stop, List<string> nullableUnterminatorList)
+        {
+            bool returnValue = true;
+            for (int i = start; i <= stop; i++)
+            {
+                if (!nullableUnterminatorList.Contains(list[i]))
+                {
+                    returnValue = false;
+                    break;
+                }
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 检测指定的list中的所有元素是不是都可为空
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="nullableUnterminatorList"></param>
+        /// <returns></returns>
+        private static bool isNullable(List<string> list, List<string> nullableUnterminatorList)
+        {
+            bool returnValue = true;
+            foreach (string item in list)
+            {
+                if (isTerminator(item) || !nullableUnterminatorList.Contains(item) ) //如果是终结符或者不在可空列表里，则返回false
+                {
+                    returnValue = false;
+                }
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 检测语法的左部非终结符是否可以为空，可以则返回true，否则返回false
+        /// </summary>
+        /// <param name="grammar"></param>
+        /// <param name="nullableUnterminatorList"></param>
+        /// <returns></returns>
+        private static bool isNullable(Grammar grammar, List<string> nullableUnterminatorList)
+        {
+            bool returnValue = false;
+            if (grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY")    //右部为空的语法
+                returnValue = true;
+            else if(isSubList(grammar.Right, nullableUnterminatorList))
+                returnValue = true;
+            return returnValue;
+        }
+
+        /// <summary>
+        /// 检测语法是不是空语法，是则返回true，否则返回false
+        /// </summary>
+        /// <param name="grammar"></param>
+        /// <returns></returns>
+        private static bool isNullGrammar(Grammar grammar)
+        {
+            bool returnValue = false;
+            if (grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY")
+            {
+                returnValue = true;
+            }
+            return returnValue;
         }
         #endregion
     }

@@ -2,7 +2,10 @@
 #include "conio.h"
 void main(void)
 {
-  int x,y,z,t;
+  int x;
+  int y;
+  int z;
+  int t;
   x = 3;
   y = 8;
   z = 4;
