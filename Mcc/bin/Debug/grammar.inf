@@ -58,6 +58,9 @@ temp10 : ;
 temp10 : expression ;
 
 expression : var temp13
+expression : ( expression ) temp4 temp3 temp12
+expression : NUM temp4 temp3 temp12
+expression : ID temp14 temp4 temp3 temp12
 temp13 : = expression
 temp13 : temp4 temp3 temp12
 

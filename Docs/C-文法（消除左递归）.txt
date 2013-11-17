@@ -51,7 +51,7 @@
 	return-stmt -> return expression ;
 	
 18.	expression -> var = expression
-	expression -> simple-expression ;
+	expression -> simple-expression 
 	
 19.	var -> ID
 	var -> ID [ expression ]
