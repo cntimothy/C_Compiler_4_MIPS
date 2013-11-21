@@ -525,41 +525,45 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
                 }
                 else
                 {
-                    if (stackPeak == "$")
+                    //if (stackPeak == "$")
+                    //{
+                    //    if (stackPeak == curToken.Name)
+                    //    {
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                    //    }
+                    //}
+                    //else
+                    //{
+                    Grammar grammar = syntacticTbl.getGrammar(stackPeak, curToken.Name);
+                    if (grammar != null)
                     {
-                        if (stackPeak == curToken.Name)
+                        if (!(grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY"))
                         {
-                            break;
-                        }
-                        else
-                        {
-                            throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                            for (int j = grammar.Right.Count - 1; j >= 0; j--)
+                            {
+                                analysisStack.Push(grammar.Right[j]);
+                            }
                         }
                     }
                     else
                     {
-                        Grammar grammar = syntacticTbl.getGrammar(stackPeak, curToken.Name);
-                        if (grammar != null)
-                        {
-                            if (!(grammar.Right.Count == 1 && grammar.Right[0] == "EMPTY"))
-                            {
-                                for (int j = grammar.Right.Count - 1; j >= 0; j--)
-                                {
-                                    analysisStack.Push(grammar.Right[j]);
-                                }
-                            }
-                            //i++;
-                        }
-                        else
-                        {
-                            throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
-                        }
+                        throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
                     }
+                    //}
                 }
             }
             if ((analysisStack.Count != 0) || (i != tokenList.Count))
             {
                 throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("语法分析完成，未发现语法错误！");
             }
         }
 
