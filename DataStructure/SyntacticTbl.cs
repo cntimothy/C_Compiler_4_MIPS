@@ -22,6 +22,7 @@ namespace MIPS246.Compiler.DataStructure
                 {
                     row.Add(terminator, findGrammar(firstDicForGrammar, followDic, terminator, unterminator));
                 }
+                row.Add("$", findGrammar(firstDicForGrammar, followDic, "$", unterminator)); //加上“$”列
                 table.Add(unterminator, row);
             }
         }

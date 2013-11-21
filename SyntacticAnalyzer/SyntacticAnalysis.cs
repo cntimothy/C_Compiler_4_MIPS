@@ -525,19 +525,22 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
                 }
                 else
                 {
-                    //if (stackPeak == "$")
-                    //{
-                    //    if (stackPeak == curToken.Name)
-                    //    {
-                    //        break;
-                    //    }
-                    //    else
-                    //    {
-                    //        throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
-                    //    }
-                    //}
-                    //else
-                    //{
+                    if (stackPeak == "$")
+                    {
+                        if (stackPeak == curToken.Name)
+                        {
+                            i++;
+                            Console.WriteLine();
+                            Console.WriteLine("语法分析完成，未发现语法错误！");
+                            break;
+                        }
+                        else
+                        {
+                            throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
+                        }
+                    }
+                    else
+                    {
                     Grammar grammar = syntacticTbl.getGrammar(stackPeak, curToken.Name);
                     if (grammar != null)
                     {
@@ -553,17 +556,12 @@ namespace MIPS246.Compiler.SyntacticAnalyzer
                     {
                         throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
                     }
-                    //}
+                    }
                 }
             }
             if ((analysisStack.Count != 0) || (i != tokenList.Count))
             {
                 throw (new SyntacticAnalysisException(curToken.Name, curToken.LineNo, new Exception()));
-            }
-            else
-            {
-                Console.WriteLine();
-                Console.WriteLine("语法分析完成，未发现语法错误！");
             }
         }
 
