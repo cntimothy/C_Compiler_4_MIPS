@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MIPS246.Compiler.ErrorHandling.FileNotFoundException">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAACA=</HashCode>
+      <FileName>FileNotFoundException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.LexTblInitExcpetion">
+    <Position X="7.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>LexTblInitExcpetion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.MccBaseException">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MccBaseException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.SyntacticAnalysisException">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAACA=</HashCode>
+      <FileName>SyntacticAnalysisException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.TokenInitException">
+    <Position X="9.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAACA=</HashCode>
+      <FileName>TokenInitException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.UnknowCharExcpetion">
+    <Position X="11.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAADACAAAAAAAAAACA=</HashCode>
+      <FileName>UnknowCharException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MIPS246.Compiler.ErrorHandling.UnknowWordExcpetion">
+    <Position X="5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAACA=</HashCode>
+      <FileName>UnknowWordException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>
